@@ -3,4 +3,5 @@
 members = [
   "jblock",
   "game",
+  "game_lib",
 ]
