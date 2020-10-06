@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+service GameService {
+ rpc Create(Player) returns (string);
+ rpc Join(Player, Game) returns (string);
+
+}
+
+message Player {
+    string name = 1;
+    string id = 2;
+}
+
+message Game {
+    string id = 1;
+}
