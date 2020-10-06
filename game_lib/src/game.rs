@@ -1,3 +1,1 @@
-pub Struct Game {
-
-}
+pub struct Game {}
