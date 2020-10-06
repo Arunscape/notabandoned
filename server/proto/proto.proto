@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+service Create {
+ rpc 
+}
+
+service Join {
+ rpc 
+}

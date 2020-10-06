@@ -1,5 +1,5 @@
 [package]
-name = "game"
+name = "server"
 version = "0.1.0"
 authors = ["Arunscape <arun@woosaree.xyz>"]
 edition = "2018"
@@ -7,5 +7,6 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-winit = "0.22.2"
-jblock = { path = "../jblock" }
+
+[build-dependencies]
+tonic-build = "*"
