@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
 project(notabandoned)
 
+set(CMAKE_CXX_STANDARD 17)
+
 # raylib-cpp
 find_package(raylib-cpp 3.0.1 QUIET)
 if (NOT raylib-cpp_FOUND)
@@ -23,6 +25,8 @@ endif()
 add_executable(
     notabandoned
     src/main.cpp
+    src/worldgen.cpp
+    src/world.cpp
 )
 set(raylib_VERBOSE 1)
 target_link_libraries(notabandoned PUBLIC raylib raylib-cpp)

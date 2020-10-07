@@ -1,33 +1,8 @@
 #include "raylib-cpp.hpp"
 #include <vector>
 
-struct Cube {
-    Vector3 pos;
-    int id;
-
-    Cube(float x, float y, float z, int nid) {
-        pos = (Vector3){x, y, z};
-        id = nid;
-    }
-};
-
-void make_blocks(std::vector<Cube>& cubes) {
-    cubes.push_back(Cube(2, 1, 0, 1));
-    cubes.push_back(Cube(2, 2, 0, 1));
-    cubes.push_back(Cube(2, 3, 0, 1));
-    cubes.push_back(Cube(2, 1, 1, 1));
-    cubes.push_back(Cube(2, 2, 1, 1));
-    cubes.push_back(Cube(2, 1, 2, 1));
-
-
-    int bound = 16;
-    for (int x = -bound; x < bound; x++) {
-        for (int z = -bound; z < bound; z++) {
-            cubes.push_back(Cube(x, 0, z, 0));
-        }
-    }
-
-}
+#include "world.h"
+#include "worldgen.h"
 
 int main() {
     raylib::Color background(RAYWHITE);
@@ -43,23 +18,31 @@ int main() {
 
     raylib::Texture2D textures[] = {
         raylib::Texture2D ("../assets/textures/stone.png"),
-        raylib::Texture2D ("../assets/textures/box.png")
+        raylib::Texture2D ("../assets/textures/stone.png"),
+        raylib::Texture2D ("../assets/textures/box.png"),
     };
 
     SetTargetFPS(60);
 
-    std::vector<Cube> cubes;
-    make_blocks(cubes);
+    World world = WorldGen::test1();
 
     // Main game loop
+    Vector3 pos;
     while (!w.ShouldClose()) {
         camera.Update();
         BeginDrawing();
         background.ClearBackground();
         camera.BeginMode3D();
 
-        for (Cube c : cubes) {
-            textures[c.id].Draw(c.pos, 1, 1, 1, RAYWHITE);
+        for (pos.y = 0; pos.y < WORLD_HEIGHT; pos.y++) {
+            for (pos.z = 0; pos.z < WORLD_DEPTH; pos.z++) {
+                for (pos.x = 0; pos.x < WORLD_WIDTH; pos.x++) {
+                    int tid = world.getBlock(pos.x, pos.y, pos.z);
+                    if (tid) {
+                        textures[tid].Draw(pos, 1, 1, 1, RAYWHITE);
+                    }
+                }
+            }
         }
 
         EndMode3D();
