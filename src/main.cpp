@@ -30,8 +30,8 @@ void make_blocks(std::vector<Cube>& cubes) {
 }
 
 int main() {
-	raylib::Color background(RAYWHITE);
-	raylib::Window w(1920, 1080, "Among Blocks");
+    raylib::Color background(RAYWHITE);
+    raylib::Window w(1920, 1080, "Among Blocks");
 
     raylib::Camera camera(
             raylib::Vector3(4.0f, 2.0f, 4.0f),
@@ -43,18 +43,18 @@ int main() {
 
     raylib::Texture2D textures[] = {
         raylib::Texture2D ("../assets/textures/stone.png"),
-        raylib::Texture2D  ("../assets/textures/box.png")
+        raylib::Texture2D ("../assets/textures/box.png")
     };
 
-	SetTargetFPS(60);
+    SetTargetFPS(60);
 
     std::vector<Cube> cubes;
     make_blocks(cubes);
 
-	// Main game loop
-	while (!w.ShouldClose()) {
+    // Main game loop
+    while (!w.ShouldClose()) {
         camera.Update();
-		BeginDrawing();
+        BeginDrawing();
         background.ClearBackground();
         camera.BeginMode3D();
 
@@ -63,8 +63,8 @@ int main() {
         }
 
         EndMode3D();
-		EndDrawing();
-	}
+        EndDrawing();
+    }
 
-	return 0;
+    return 0;
 }
