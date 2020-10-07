@@ -1,6 +1,11 @@
 #include "world.h"
 
+
+World::~World() {
+    delete [] blocks;
+}
 World::World() {
+    blocks = new char[WORLD_BLOCKS];
     for (int i = 0; i < WORLD_BLOCKS; i++) {
         blocks[i] = 0;
     }

@@ -12,9 +12,9 @@ World test1() {
     world.setBlock(2, 2, 1, 2);
 
 
-    int bound = 16;
-    for (int x = -bound; x < bound; x++) {
-        for (int z = -bound; z < bound; z++) {
+    int bound = 32;
+    for (int x = 0; x < bound; x++) {
+        for (int z = 0; z < bound; z++) {
             world.setBlock(1, x, 0, z);
         }
     }
