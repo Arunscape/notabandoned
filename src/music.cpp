@@ -13,8 +13,8 @@ Sounds::Sounds() {
 
   file >> config;
   
-  walk.set(raylib::Sound(std::string(CONFIG_PATH) + std::string(config["walk"])));
-  menu.set(raylib::Music(std::string(CONFIG_PATH) + std::string(config["menu"])));
+  walk = new raylib::Sound(std::string(CONFIG_PATH) + std::string(config["walk"]));
+  menu = new raylib::Music(std::string(CONFIG_PATH) + std::string(config["menu"]));
 
 }
 
