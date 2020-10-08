@@ -6,7 +6,7 @@ run: build
 
 
 build:
-	[ ! -d "build" ] && cmake -B build .;\
+	cmake -B build .;\
 	make -C build
 	
 clean:

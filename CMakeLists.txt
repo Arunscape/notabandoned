@@ -47,6 +47,7 @@ add_executable(
     src/main.cpp
     src/player.cpp
     src/controller.cpp
+    src/music.cpp
 )
 set(raylib_VERBOSE 1)
 
