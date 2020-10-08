@@ -92,6 +92,8 @@ int main() {
             p.pos.DrawCylinder(PLAYER_RADII-0.1, PLAYER_RADII, PLAYER_HEIGHT, PLAYER_RES, p.getColor());
         }
 
+        if (IsKeyUp(KEY_W)) walk.Play();
+
         EndMode3D();
         DrawFPS(0, 0);
         EndDrawing();
