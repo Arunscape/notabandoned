@@ -28,6 +28,19 @@ set(CMAKE_CXX_STANDARD 20)
 include_directories(src)
 
 add_subdirectory(src/world)
+# json
+include(FetchContent)
+
+FetchContent_Declare(json
+  GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent
+  GIT_TAG v3.9.1)
+
+FetchContent_GetProperties(json)
+if(NOT json_POPULATED)
+  FetchContent_Populate(json)
+  add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+
 
 add_executable(
     notabandoned
@@ -36,4 +49,6 @@ add_executable(
     src/controller.cpp
 )
 set(raylib_VERBOSE 1)
+
 target_link_libraries(notabandoned PUBLIC raylib raylib-cpp world)
+target_link_libraries(notabandoned PRIVATE nlohmann_json::nlohmann_json)
