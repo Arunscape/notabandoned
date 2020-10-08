@@ -22,12 +22,16 @@ if (NOT raylib-cpp_FOUND)
   endif()
 endif()
 
+set(CMAKE_CXX_STANDARD 20)
+
+include_directories(src)
+
+add_subdirectory(src/world)
+
 add_executable(
     notabandoned
     src/main.cpp
-    src/worldgen.cpp
-    src/world.cpp
     src/player.cpp
 )
 set(raylib_VERBOSE 1)
-target_link_libraries(notabandoned PUBLIC raylib raylib-cpp)
+target_link_libraries(notabandoned PUBLIC raylib raylib-cpp world)
