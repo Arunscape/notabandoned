@@ -72,7 +72,7 @@ int main() {
     raylib::Music music(MUSIC_CONFIG_PATH + "Dubioza kolektiv - Free.mp3 (The Pirate Bay Song).wav");
     music.Play();
 
-    auto aSound = Asound("walk");
+    auto aSound = Asound();
 
     auto start = std::chrono::system_clock::now();
     auto end = std::chrono::system_clock::now();
@@ -99,7 +99,7 @@ int main() {
             p.pos.DrawCylinder(PLAYER_RADII-0.1, PLAYER_RADII, PLAYER_HEIGHT, PLAYER_RES, p.getColor());
         }
 
-        if (IsKeyDown(KEY_W)) aSound.get()->Play();
+        if (IsKeyDown(KEY_W)) aSound.play("walk");
 
         EndMode3D();
         DrawFPS(0, 0);
