@@ -5,19 +5,13 @@
 
 const std::string MUSIC_CONFIG_PATH =  "../assets/music/";
 
-class Sounds {
+class Asound {
   nlohmann::json config;
-  //raylib::AudioDevice audio;
+  std::unique_ptr<raylib::Sound> sound;
 
-  //std::unique_ptr<raylib::Sound> walk;
-  std::unique_ptr<raylib::Music> menu; // loops by default
 
 public:
-  Sounds();
-  ~Sounds();
-  void walk_sound();
-  void stop_walk_sound();
-  void menu_loop();
-  void stop_menu_loop();
-  void update();
+  Asound(const std::string sound_str);
+  ~Asound();
+  raylib::Sound* get();
 };
