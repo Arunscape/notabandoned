@@ -11,17 +11,14 @@ Asound::Asound(std::string sound_str) {
   }
 
   file >> config;
-  
+
   std::cout << "Asound will play " << config[sound_str] << std::endl;
   std::string s = MUSIC_CONFIG_PATH + std::string(config[sound_str]);
-  raylib::Sound rs (s);
-  
+  raylib::Sound rs(s);
+
   sound = std::make_unique<raylib::Sound>(s);
 }
 
 Asound::~Asound() {}
 
-
-raylib::Sound* Asound::get(){
-  return sound.get();
-}
+raylib::Sound *Asound::get() { return sound.get(); }
