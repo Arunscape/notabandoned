@@ -38,7 +38,7 @@ void Controller::update(float delta) {
         z += SPEED * delta;
     } else if (down && !up) {
         z -= SPEED * delta;
-    } else if (left && !right) {
+    } if (left && !right) {
         x += SPEED * delta;
     } else if (right && !left) {
         x -= SPEED * delta;
