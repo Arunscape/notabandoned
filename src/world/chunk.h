@@ -30,12 +30,11 @@ namespace std {
 
 namespace World {
 
-struct BlockPos {
-    int64_t x;
-    int64_t y;
-    int64_t z;
-};
-
+template<typename A, typename B>
+constexpr auto mod(A a, B b) {
+    return (a % b + b) % b;
+}
+struct BlockPos;
 
 class Chunk {
 public:
@@ -43,7 +42,9 @@ public:
 
     void draw(const ResourcePack&) const;
     const ChunkPos &pos() const { return position; }
-    void set_block(const BlockPos &pos, blockid_t id);
+    blockid_t& operator[](const BlockPos&);
+    const blockid_t& operator[](const BlockPos&) const;
+    void set_block(const BlockPos&, blockid_t);
 
     static constexpr int width = 16;
     static constexpr int height = 256;
@@ -51,6 +52,20 @@ public:
 private:
     ChunkPos position;
     blockid_t block_data[width][height][depth];
+};
+
+struct BlockPos {
+    int64_t x;
+    int64_t y;
+    int64_t z;
+
+    ChunkPos chunk_pos() const {
+        return {x/Chunk::width, z/Chunk::depth};
+    }
+
+    BlockPos chunk_relative() const {
+        return {mod(x, Chunk::width), y, mod(z, Chunk::depth)};
+    }
 };
 
 class ChunkManager;
@@ -71,6 +86,8 @@ public:
 
     void set_render_distance(int r) { render_distance = r; }
     void add_chunk(const ChunkPos &,std::unique_ptr<Chunk>);
+
+    blockid_t operator[](const BlockPos&) const;
 private:
     ChunkLoader& chunk_loader;
     const ResourcePack& resource_pack;

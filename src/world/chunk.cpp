@@ -21,8 +21,16 @@ void Chunk::draw(const ResourcePack& resources) const {
     }
 }
 
-void Chunk::set_block(const BlockPos &pos, blockid_t id) {
-    block_data[pos.x][pos.y][pos.z] = id;
+blockid_t& Chunk::operator[](const BlockPos& pos) {
+    return block_data[pos.x][pos.y][pos.z];
+}
+
+const blockid_t& Chunk::operator[](const BlockPos& pos) const {
+    return block_data[pos.x][pos.y][pos.z];
+}
+
+void Chunk::set_block(const BlockPos& pos, blockid_t bid) {
+    (*this)[pos] = bid;
 }
 
 ChunkManager::ChunkManager(const ResourcePack& rp, ChunkLoader& cl)
@@ -48,6 +56,16 @@ void ChunkManager::draw(const ChunkPos& position) {
             }
         }
     }
+}
+
+blockid_t ChunkManager::operator[](const BlockPos& block) const
+{
+    const auto& chunk = chunks.find(block.chunk_pos());
+    if (chunk == chunks.end() && chunk->second == nullptr) {
+        return 0;
+    }
+
+    return (*chunk->second)[block.chunk_relative()];
 }
 
 }
