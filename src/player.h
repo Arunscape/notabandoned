@@ -1,3 +1,5 @@
+#pragma once
+
 #include "raylib-cpp.hpp"
 
 #define PLAYER_HEIGHT 1.8f
@@ -13,7 +15,7 @@ class Player {
     Color color;
 
   public:
-    Vector3 pos;
+    raylib::Vector3 pos;
     Player(Color color, int x, int y, int z);
     ~Player();
     Color getColor();

@@ -28,6 +28,7 @@ add_executable(
     src/worldgen.cpp
     src/world.cpp
     src/player.cpp
+    src/controller.cpp
 )
 set(raylib_VERBOSE 1)
 target_link_libraries(notabandoned PUBLIC raylib raylib-cpp)
