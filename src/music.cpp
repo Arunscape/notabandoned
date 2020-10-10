@@ -21,66 +21,73 @@ Asound::Asound() {
 
 Asound::~Asound() {}
 
-void Asound::play(std::string sound){
-  sounds[sound].Play();
+raylib::Sound& Asound::play(const std::string sound){
+  return (*this)[sound].Play();
 }
 
-void Asound::pause(std::string sound) {
-  sounds[sound].Pause();
+raylib::Sound& Asound::pause(const std::string &sound) {
+  return (*this)[sound].Pause();
 }
 
-void Asound::resume(std::string sound) {
-  sounds[sound].Resume();
+raylib::Sound& Asound::resume(const std::string &sound) {
+  return (*this)[sound].Resume();
 }
 
-void Asound::stop(std::string sound){
-  sounds[sound].Stop();
+raylib::Sound& Asound::stop(const std::string &sound){
+  return (*this)[sound].Stop();
 }
 
-void Asound::play_multi(std::string sound){
-  sounds[sound].PlayMulti();
+raylib::Sound& Asound::play_multi(const std::string &sound){
+  return (*this)[sound].PlayMulti();
 }
 
-void Asound::stop_multi(std::string sound){
-  sounds[sound].StopMulti();
+raylib::Sound& Asound::stop_multi(const std::string &sound){
+  return (*this)[sound].StopMulti();
 }
 
-void Asound::set_pitch(std::string sound, float pitch){
-  sounds[sound].SetPitch(pitch);
+raylib::Sound& Asound::set_pitch(const std::string &sound, float pitch){
+  return (*this)[sound].SetPitch(pitch);
 }
 
-void Asound::set_volume(std::string sound, float volume){
-  sounds[sound].SetVolume(volume);
+raylib::Sound& Asound::set_volume(const std::string &sound, float volume){
+  return (*this)[sound].SetVolume(volume);
 }
 
-bool Asound::is_playing(std::string sound){
-  return sounds[sound].IsPlaying();
+bool Asound::is_playing(const std::string &sound){
+  return (*this)[sound].IsPlaying();
 }
 
-unsigned int Asound::get_sample_count(std::string sound){
-  return sounds[sound].GetSampleCount();
+unsigned int Asound::get_sample_count(const std::string &sound){
+  return (*this)[sound].GetSampleCount();
 }
 
-void Asound::set_sample_count(std::string sound, unsigned int value){
-  sounds[sound].SetSampleCount(value);
+void Asound::set_sample_count(const std::string &sound, unsigned int value){
+  (*this)[sound].SetSampleCount(value);
 }
 
-raylib::AudioStream Asound::get_audio_stream(std::string sound){
-  return sounds[sound].GetStream();
+raylib::AudioStream Asound::get_audio_stream(const std::string &sound){
+  return (*this)[sound].GetStream();
 }
 
-void Asound::set_audio_stream(std::string sound, raylib::AudioStream value){
-  sounds[sound].SetStream(value);
+void Asound::set_audio_stream(const std::string &sound, raylib::AudioStream value){
+  (*this)[sound].SetStream(value);
 }
 
-void Asound::unload(std::string sound){
-  sounds[sound].Unload();
+void Asound::unload(const std::string &sound){
+  (*this)[sound].Unload();
 }
 
-void Asound::update(std::string sound, const void* data, int sample_count){
-  sounds[sound].Update(data, sample_count);
+raylib::Sound& Asound::update(const std::string &sound, const void* data, int sample_count){
+  return (*this)[sound].Update(data, sample_count);
 }
 
-void Asound::set(std::string sound, raylib::Sound rsound){
-  sounds[sound].set(rsound);
+void Asound::set(const std::string &sound, raylib::Sound rsound){
+  (*this)[sound].set(rsound);
+}
+
+raylib::Sound& Asound::operator[](const std::string &sound) {
+    if (sounds.find(sound) == sounds.end())
+        throw std::runtime_error("sound not found");
+
+    return sounds.find(sound)->second;
 }

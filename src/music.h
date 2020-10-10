@@ -13,22 +13,21 @@ class Asound {
 public:
   Asound();
   ~Asound();
-  void play(std::string sound);
-  void pause(std::string sound);
-  void resume(std::string sound);
-  void stop(std::string sound);
-  void play_multi(std::string sound);
-  void stop_multi(std::string sound);
-  void set_pitch(std::string sound, float pitch);
-  void set_volume(std::string sound, float volume);
-  bool is_playing(std::string sound);
-  unsigned int get_sample_count(std::string sound);
-  void set_sample_count(std::string sound, unsigned int value);
-  raylib::AudioStream get_audio_stream(std::string sound);
-  void set_audio_stream(std::string sound, raylib::AudioStream value);
-  void unload(std::string sound);
-  void set(std::string sound, raylib::Sound rsound);
-  void update(std::string sound, const void* data, int sample_count);
-
-
+  raylib::Sound& play(std::string sound);
+  raylib::Sound& pause(const std::string &sound);
+  raylib::Sound& resume(const std::string &sound);
+  raylib::Sound& stop(const std::string &sound);
+  raylib::Sound& play_multi(const std::string &sound);
+  raylib::Sound& stop_multi(const std::string &sound);
+  raylib::Sound& set_pitch(const std::string &sound, float pitch);
+  raylib::Sound& set_volume(const std::string &sound, float volume);
+  bool is_playing(const std::string &sound);
+  unsigned int get_sample_count(const std::string &sound);
+  void set_sample_count(const std::string &sound, unsigned int value);
+  raylib::AudioStream get_audio_stream(const std::string &sound);
+  void set_audio_stream(const std::string &sound, raylib::AudioStream value);
+  void unload(const std::string &sound);
+  void set(const std::string &sound, raylib::Sound rsound);
+  raylib::Sound& update(const std::string &sound, const void* data, int sample_count);
+  raylib::Sound& operator[](const std::string &sound);
 };
