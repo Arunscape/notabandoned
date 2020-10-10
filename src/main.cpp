@@ -47,7 +47,6 @@ int main() {
             60.0f,
             CAMERA_PERSPECTIVE);
     camera.SetMode(CAMERA_CUSTOM);
-    SetCameraMoveControls(0, 0, 0, 0, 0, 0);
 
     SetTargetFPS(60);
 
