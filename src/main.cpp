@@ -3,11 +3,38 @@
 #include <chrono>
 #include <ctime>
 #include <iostream>
+#include <world/chunk.h>
 
-#include "world.h"
-#include "worldgen.h"
 #include "player.h"
 #include "controller.h"
+
+class WorldGen : public World::ChunkLoader {
+public:
+    virtual ~WorldGen() {}
+    virtual void request_chunk(const World::ChunkPos& chunk) override {
+        World::ChunkPos origin = {0, 0};
+        if (chunk == origin) {
+            auto ch = std::make_unique<World::Chunk>(origin);
+
+            ch->set_block({8, 1, 8}, 2);
+            ch->set_block({8, 2, 8}, 2);
+            ch->set_block({8, 3, 8}, 2);
+            ch->set_block({8, 1, 8}, 2);
+            ch->set_block({8, 2, 8}, 2);
+            ch->set_block({8, 1, 8}, 2);
+
+            int bound = 16;
+            for (int x = 0; x < bound; x++) {
+                for (int z = 0; z < bound; z++) {
+                    ch->set_block({x, 0, z}, 1);
+                }
+            }
+            chunk_manager().add_chunk(chunk, move(ch));
+        } else {
+            chunk_manager().add_chunk(chunk, nullptr);
+        }
+    }
+};
 
 int main() {
     raylib::Color background(RAYWHITE);
@@ -22,15 +49,17 @@ int main() {
     camera.SetMode(CAMERA_CUSTOM);
     SetCameraMoveControls(0, 0, 0, 0, 0, 0);
 
-    raylib::Texture2D textures[] = {
-        raylib::Texture2D ("../assets/textures/stone.png"), // this one is actually air
-        raylib::Texture2D ("../assets/textures/stone.png"),
-        raylib::Texture2D ("../assets/textures/box.png"),
-    };
-
     SetTargetFPS(60);
 
-    World world = WorldGen::test1();
+    World::ResourcePack resource_pack;
+    resource_pack
+        .set_block(0, std::make_unique<World::AirBlock>())
+        .set_block(1, std::make_unique<World::PlainBlock>("../assets/textures/stone.png"))
+        .set_block(2, std::make_unique<World::PlainBlock>("../assets/textures/box.png"));
+
+    WorldGen worldgen;
+    World::ChunkManager cm(resource_pack, worldgen);
+
     std::vector<Player> players;
     Controller controller(camera);
     players.push_back(Player(BLACK, 10, 1, 10));
@@ -51,29 +80,21 @@ int main() {
         start = end;
         delta = elapsed_seconds.count();
 
+        // move player
         controller.update(delta);
-        //camera.Update();
 
         BeginDrawing();
         background.ClearBackground();
         camera.BeginMode3D();
 
-        for (pos.y = 0.5; pos.y < WORLD_HEIGHT; pos.y++) {
-            for (pos.z = 0.5; pos.z < WORLD_DEPTH; pos.z++) {
-                for (pos.x = 0.5; pos.x < WORLD_WIDTH; pos.x++) {
-                    int tid = world.getBlock(pos.x, pos.y, pos.z);
-                    if (tid) {
-                        textures[tid].Draw(pos, 1, 1, 1, RAYWHITE);
-                    }
-                }
-            }
-        }
+        cm.draw({0, 0}); //TODO follow player
 
         for (Player p : players) {
             p.pos.DrawCylinder(PLAYER_RADII-0.1, PLAYER_RADII, PLAYER_HEIGHT, PLAYER_RES, p.getColor());
         }
 
         EndMode3D();
+        DrawFPS(0, 0);
         EndDrawing();
     }
 
