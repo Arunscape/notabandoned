@@ -1,8 +1,12 @@
 #include "raylib-cpp.hpp"
 #include <vector>
+#include <chrono>
+#include <ctime>
+#include <iostream>
 #include <world/chunk.h>
 
 #include "player.h"
+#include "controller.h"
 
 class WorldGen : public World::ChunkLoader {
 public:
@@ -37,12 +41,12 @@ int main() {
     raylib::Window w(1920, 1080, "Among Blocks");
 
     raylib::Camera camera(
-            raylib::Vector3(4.0f, 2.0f, 4.0f),
+            raylib::Vector3(0.0f, 2.0f, 4.0f),
             raylib::Vector3(0.0f, 1.8f, 0.0f),
             raylib::Vector3(0.0f, 1.0f, 0.0f),
             60.0f,
             CAMERA_PERSPECTIVE);
-    camera.SetMode(CAMERA_FIRST_PERSON);
+    camera.SetMode(CAMERA_CUSTOM);
 
     SetTargetFPS(60);
 
@@ -55,16 +59,29 @@ int main() {
     WorldGen worldgen;
     World::ChunkManager cm(resource_pack, worldgen);
 
-    //World world = WorldGen::test1();
     std::vector<Player> players;
+    Controller controller(camera);
     players.push_back(Player(BLACK, 10, 1, 10));
     players.push_back(Player(RED, 11, 1, 11));
     players.push_back(Player(YELLOW, 10, 1, 11));
 
     // Main game loop
-    Vector3 pos;
+    raylib::Vector3 pos;
+
+    auto start = std::chrono::system_clock::now();
+    auto end = std::chrono::system_clock::now();
+    double delta;
     while (!w.ShouldClose()) {
-        camera.Update();
+
+        // calculate frame time
+        end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end-start;
+        start = end;
+        delta = elapsed_seconds.count();
+
+        // move player
+        controller.update(delta);
+
         BeginDrawing();
         background.ClearBackground();
         camera.BeginMode3D();
@@ -72,9 +89,7 @@ int main() {
         cm.draw({0, 0}); //TODO follow player
 
         for (Player p : players) {
-            // TODO: use this line, not the next
-            // p.pos.DrawCylinder(PLAYER_RADII-0.1, PLAYER_RADII, PLAYER_HEIGHT, PLAYER_RES, p.getColor());
-            DrawCylinder(p.pos, PLAYER_RADII-0.1, PLAYER_RADII, PLAYER_HEIGHT, PLAYER_RES, p.getColor());
+            p.pos.DrawCylinder(PLAYER_RADII-0.1, PLAYER_RADII, PLAYER_HEIGHT, PLAYER_RES, p.getColor());
         }
 
         EndMode3D();

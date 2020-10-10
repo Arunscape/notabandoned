@@ -32,6 +32,7 @@ add_executable(
     notabandoned
     src/main.cpp
     src/player.cpp
+    src/controller.cpp
 )
 set(raylib_VERBOSE 1)
 target_link_libraries(notabandoned PUBLIC raylib raylib-cpp world)
