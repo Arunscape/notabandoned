@@ -1,3 +1,4 @@
+.PHONY: run build clean
 
 run: build
 	cd build;\
@@ -5,6 +6,8 @@ run: build
 
 
 build:
-	[ ! -d "build" ] && cmake -B build .;\
+	cmake -B build .;\
 	make -C build
 	
+clean:
+	rm -rf build

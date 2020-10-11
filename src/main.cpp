@@ -7,6 +7,7 @@
 
 #include "player.h"
 #include "controller.h"
+#include "music.h"
 
 class WorldGen : public World::ChunkLoader {
 public:
@@ -67,6 +68,11 @@ int main() {
 
     // Main game loop
     raylib::Vector3 pos;
+    raylib::AudioDevice audio;
+    raylib::Music music(MUSIC_CONFIG_PATH + "Dubioza kolektiv - Free.mp3 (The Pirate Bay Song).wav");
+    music.Play();
+
+    auto aSound = Asound();
 
     auto start = std::chrono::system_clock::now();
     auto end = std::chrono::system_clock::now();
@@ -81,6 +87,7 @@ int main() {
 
         // move player
         controller.update(delta);
+        music.Update();
 
         BeginDrawing();
         background.ClearBackground();
@@ -91,6 +98,8 @@ int main() {
         for (Player p : players) {
             p.pos.DrawCylinder(PLAYER_RADII-0.1, PLAYER_RADII, PLAYER_HEIGHT, PLAYER_RES, p.getColor());
         }
+
+        if (IsKeyDown(KEY_W)) aSound.play("walk");
 
         EndMode3D();
         DrawFPS(0, 0);
