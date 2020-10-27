@@ -69,8 +69,9 @@ int main() {
     // Main game loop
     raylib::Vector3 pos;
     raylib::AudioDevice audio;
-    raylib::Music music(MUSIC_CONFIG_PATH + "Dubioza kolektiv - Free.mp3 (The Pirate Bay Song).wav");
-    music.Play();
+
+    auto aMusic = Amusic();
+    aMusic.play("menu");
 
     auto aSound = Asound();
 
@@ -87,7 +88,7 @@ int main() {
 
         // move player
         controller.update(delta);
-        music.Update();
+        aMusic.update("menu");
 
         BeginDrawing();
         background.ClearBackground();
